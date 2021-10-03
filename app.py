@@ -3,6 +3,13 @@ from flask_caching import Cache
 import cv2
 from blink_detection import face_detection
 
+config = {
+    "DEBUG": True,                # some Flask specific configs
+    "CACHE_TYPE": "SimpleCache",  # Flask-Caching related configs
+    "CACHE_DEFAULT_TIMEOUT": 300
+}
+app = Flask(__name__)
+app.config.from_mapping(config)
 
 @app.route('/')
 def index():
