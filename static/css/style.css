@@ -25,8 +25,6 @@ TABLE OF CONTENT
 |  8.1 768PX
 |  8.2 1024PX
 |  8.3 1200PX
-9.0 UTILS
-|  9.1 CAMERA
 --------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
@@ -120,7 +118,7 @@ TABLE OF CONTENT
 2.0 FOUNDATION
 --------------------------------------------------------------*/
 
-html { box-sizing: border-box; }
+html { box-sizing: border-box; height:100%;}
 
 *,
 *:before,
@@ -135,6 +133,7 @@ body {
   font-weight: 400;
   line-height: var(--ui-typography-p-leading);
   margin: 0 auto;
+  height:100%;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -616,7 +615,7 @@ svg {
   .ui-section-footer__layout {
     flex-direction: row;
     justify-content: space-between;
-    position: relative;
+/*    position: relative;*/
   }
 
   .ui-section-footer--menu {
@@ -842,31 +841,4 @@ svg {
     padding-bottom: 3rem;
     padding-top: 3rem;
   }
-
-
-/*--------------------------------------------------------------
-9.0 UTILS
---------------------------------------------------------------*/
-
-  /*------------------------------------------------------------
-  |
-  | 9.1 CAMERA
-  |
-  ------------------------------------------------------------*/
-
-/* 
-  .camera-container {
-	margin: 0px auto;
-	width: 500px;
-	height: 375px;
-	border: 10px #333 solid;
-  }
-
-  .video-element {
-      width: 500px;
-      height: 375px;
-      background-color: #ddd;
-  }
-*/
-
 }

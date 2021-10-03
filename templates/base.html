@@ -3,8 +3,8 @@
   <head>
     <!-- PERFORMANCE -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
-    <link rel="preload" as="style" href="static/css/style.css">
-    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <link rel="preload" as="style" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <!-- TITLE -->
     <title>YY</title>
   </head>
@@ -12,9 +12,9 @@
     {% block header %}{% endblock %}
     <main role="main">
       <section class="ui-section-hero">
-          <div class="ui-layout-column-6 ui-layout-column-center">
-            <a href="https://www.nasa.gov/sites/default/files/thumbnails/image/quasaroutflow.png" class="ui-text-note"><small>THE SPACE IS TOO EMPTY</small></a>
-            <a href="p1" class="ui-text-note"><small>  |  OR ISN'T IT</small></a>
+          <div class="ui-layout-column-6 ui-layout-column-center" style="padding-top:5%">
+            <a href="https://www.nasa.gov/sites/default/files/thumbnails/image/quasaroutflow.png" class="ui-text-note"><small>THE SPACE IS TOO EMPTY | </small></a>
+            <a href="p1" class="ui-text-note" style="color:#00329f;"><small>OR ISN'T IT</small></a>
           </div>
       </section>
     </main>
