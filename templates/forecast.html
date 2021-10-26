@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- PERFORMANCE -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+    <link rel="preload" as="style" href="static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <!-- TITLE -->
+    <title>forecast</title>
+    <style>
+      audio::-webkit-media-controls-timeline,
+      video::-webkit-media-controls-timeline {
+        display: none;
+      }
+      audio::-webkit-media-controls,
+      video::-webkit-media-controls {
+        display: none;
+      }
+      .center {
+        position: absolute;
+        left: 50%;
+        top: 38%;
+        display: block;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    {% block header %}{% endblock %}
+    <main role="main">
+      <video class="center" width="50%" controls autoplay loop>
+        <source src="static/video/lake.mp4" type="video/mp4">
+      </video>
+    </main>
+    {% block footer %}{% endblock %}
+  </body>
+</html>

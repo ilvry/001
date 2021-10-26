@@ -23,6 +23,10 @@ def open_dreampage(error):
 def open_paths(path):
   if path == 'p1':
     return render_template('p1Ext.html')
+  elif path == 'forecast':
+    return render_template('forecastExt.html')
+  elif path == 'whitehole':
+    return render_template('whiteholeExt.html')
   else:
     abort(404)
 
@@ -60,7 +64,7 @@ def get_image():
 def img_feed():
     return Response(get_image(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
-  
+
 if __name__ == '__main__':
     cache = Cache(app)
     cache.set("eye_open", True)

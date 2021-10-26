@@ -37,7 +37,7 @@ def inc_brightness(img):
   hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
   h, s, v = cv2.split(hsv)
 
-  added_brightness = 100
+  added_brightness = 50
   lim = 255 - added_brightness
   v[v > lim] = 255
   v[v <= lim] += added_brightness
