@@ -16,10 +16,17 @@
       video::-webkit-media-controls {
         display: none;
       }
-      .center {
+      .upper-center {
         position: absolute;
         left: 50%;
         top: 38%;
+        display: block;
+        transform: translate(-50%, -50%);
+      }
+      .lower-center {
+        position: absolute;
+        left: 50%;
+        top: 62%;
         display: block;
         transform: translate(-50%, -50%);
       }
@@ -28,9 +35,57 @@
   <body>
     {% block header %}{% endblock %}
     <main role="main">
-      <video class="center" width="50%" controls autoplay loop>
-        <source src="static/video/lake.mp4" type="video/mp4">
+      <video class="upper-center" id="curr-weather-vid" width="50%" controls autoplay loop>
+        <source src="static/vid/lake.mp4" type="video/mp4">
       </video>
+      
+      <a class="lower-center" id="curr-weather" style="color:#ddd;"><small>no weather data</small></a>
+      <script type="text/javascript">
+      var getJSON = function(url, callback) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.responseType = 'json';
+        
+          xhr.onload = function() {
+            var status = xhr.status;
+            if (status == 200) {
+              callback(null, xhr.response);
+            } else {
+              callback(status);
+            }
+          };
+          xhr.send();
+      };
+        
+      var display_vid = "static/vid/lake.mp4";
+      // get latest weather once every minute
+      function getCurrWeather(){
+        getJSON('https://api.weatherapi.com/v1/current.json?key=920cd9b1a4734e3984515156212610&q=auckland&aqi=yes',  function(err, data) {
+          if (err != null) {
+            console.error(err);
+          } else {
+            var text = `<small> ${data.location.localtime}\n`+
+                               `${data.current.condition.text} </small>`
+            console.log(data.location.localtime + " " + data.current.condition.text);
+            document.getElementById('curr-weather').innerHTML = text;
+            var update_vid;
+            if (data.location.localtime[15] % 2 == 1) {
+              update_vid = "static/vid/lake.mp4";
+            } else {
+              update_vid = "static/vid/goose.mp4";
+            }
+            if (display_vid != update_vid) {
+              display_vid = update_vid;
+              document.getElementById('curr-weather-vid').src=display_vid; 
+            }
+          }
+        });
+        setTimeout(getCurrWeather,2000);
+      };
+
+      getCurrWeather();
+      </script>
+
     </main>
     {% block footer %}{% endblock %}
   </body>
