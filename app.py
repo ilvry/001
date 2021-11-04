@@ -35,11 +35,12 @@ def gen_frames():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
-@app.get('/video_feed')
+@app.route('/video_feed')
 def video_feed():
     print('video feed!', file=sys.stdout)
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+#    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return 'static/img/open.png'
 
 # generate frame by frame from two images
 def get_image():
@@ -51,10 +52,11 @@ def get_image():
       yield(b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n'+ img + b'\r\n')
 
-@app.get("/img_feed")
+@app.route("/img_feed")
 def img_feed():
     print('display eye!', file=sys.stdout)
-    return Response(get_image(), mimetype="multipart/x-mixed-replace; boundary=frame")
+#    return Response(get_image(), mimetype="multipart/x-mixed-replace; boundary=frame")
+    return 'static/img/open.png'
 
 @app.route('/<path:path>')
 def open_paths(path):
