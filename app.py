@@ -2,7 +2,6 @@ from flask import Flask, render_template, abort, request, redirect, url_for, Res
 from flask_caching import Cache
 import cv2
 from blink_detection import face_detection
-import sys
 
 config = {
     "DEBUG": True,                # some Flask specific configs
@@ -32,15 +31,16 @@ def gen_frames():
             cache.set("eye_open", eye_open)
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+            return frame
+#            yield (b'--frame\r\n'
+#                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 @app.route('/video_feed')
 def video_feed():
-    print('video feed!', file=sys.stdout)
     #Video streaming route. Put this in the src attribute of an img tag
 #    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-    return 'static/img/open.png'
+    return gen_frames()
+#    return redirect(url_for('static', filename='img/open.png'))
 
 # generate frame by frame from two images
 def get_image():
@@ -49,14 +49,15 @@ def get_image():
         img = eye_open_img
       else:
         img = eye_close_img
-      yield(b'--frame\r\n'
-            b'Content-Type: image/jpeg\r\n\r\n'+ img + b'\r\n')
+      return img
+#      yield(b'--frame\r\n'
+#            b'Content-Type: image/jpeg\r\n\r\n'+ img + b'\r\n')
 
 @app.route("/img_feed")
 def img_feed():
-    print('display eye!', file=sys.stdout)
 #    return Response(get_image(), mimetype="multipart/x-mixed-replace; boundary=frame")
-    return 'static/img/open.png'
+    return get_image()
+#    return redirect(url_for('static', filename='img/open.png'))
 
 @app.route('/<path:path>')
 def open_paths(path):
