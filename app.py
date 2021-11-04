@@ -2,6 +2,7 @@ from flask import Flask, render_template, abort, request, redirect, url_for, Res
 from flask_caching import Cache
 import cv2
 from blink_detection import face_detection
+import sys
 
 config = {
     "DEBUG": True,                # some Flask specific configs
@@ -32,6 +33,7 @@ def open_paths(path):
 
 # generate frame by frame from camera
 def gen_frames():
+    camera = cv2.VideoCapture(0)  # web camera
     while True:
         # Capture frame-by-frame
         success, frame = camera.read()  # read the camera frame
@@ -47,6 +49,7 @@ def gen_frames():
 
 @app.route('/video_feed')
 def video_feed():
+    print('video feed!', file=sys.stdout)
     #Video streaming route. Put this in the src attribute of an img tag
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
@@ -62,13 +65,13 @@ def get_image():
 
 @app.route("/img_feed")
 def img_feed():
+    print('display eye!', file=sys.stdout)
     return Response(get_image(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 if __name__ == '__main__':
     cache = Cache(app)
     cache.set("eye_open", True)
-    camera = cv2.VideoCapture(0)  # web camera
 
     # init the face and eye cascade classifiers from xml files
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')

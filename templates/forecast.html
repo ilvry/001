@@ -58,7 +58,7 @@
       };
         
       var display_vid = "static/vid/lake.mp4";
-      // get latest weather once every minute
+      // retrieve latest weather from api once every minute
       function getCurrWeather(){
         getJSON('https://api.weatherapi.com/v1/current.json?key=920cd9b1a4734e3984515156212610&q=auckland&aqi=yes',  function(err, data) {
           if (err != null) {
