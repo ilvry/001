@@ -19,21 +19,9 @@ def index():
 @app.errorhandler(404)
 def open_dreampage(error):
     return redirect(url_for('index')), 404
-  
-@app.route('/<path:path>')
-def open_paths(path):
-  if path == 'p1':
-    return render_template('p1Ext.html')
-  elif path == 'forecast':
-    return render_template('forecastExt.html')
-  elif path == 'whitehole':
-    return render_template('whiteholeExt.html')
-  else:
-    abort(404)
 
 # generate frame by frame from camera
 def gen_frames():
-    camera = cv2.VideoCapture(0)  # web camera
     while True:
         # Capture frame-by-frame
         success, frame = camera.read()  # read the camera frame
@@ -66,12 +54,24 @@ def get_image():
 @app.route("/img_feed")
 def img_feed():
     print('display eye!', file=sys.stdout)
-    return Response(get_image(), mimetype="multipart/x-mixed-replace; boundary=frame")
+    return eye_close_img
+#    return Response(get_image(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
+@app.route('/<path:path>')
+def open_paths(path):
+  if path == 'p1':
+    return render_template('p1Ext.html')
+  elif path == 'forecast':
+    return render_template('forecastExt.html')
+  elif path == 'whitehole':
+    return render_template('whiteholeExt.html')
+  else:
+    abort(404)
 
 if __name__ == '__main__':
     cache = Cache(app)
     cache.set("eye_open", True)
+    camera = cv2.VideoCapture(0)  # web camera
 
     # init the face and eye cascade classifiers from xml files
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
