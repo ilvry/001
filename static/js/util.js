@@ -26,7 +26,7 @@ function onOpenCvReady(){
         // start processing frame.
         $.ajax({
           type: "GET",
-          url: "getFrame",
+          url: "/getFrame",
           success: function(output){
             console.log(output);
           },
