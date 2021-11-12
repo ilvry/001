@@ -20,23 +20,27 @@ def index():
 
 @app.errorhandler(404)
 def open_dreampage(error):
-    return redirect(url_for('index')), 404
+    return redirect(url_for('index'))
 
 @csrf.exempt
 @app.route('/getFrame', methods=['GET'])
 def get_frame():
-  # Capture frame-by-frame
-  success, frame = camera.read()  # read the camera frame
-  if success:
-    eye_open, frame = face_detection(frame, face_cascade, eye_cascade)
-    return jsonify({'eyestatus': eye_open})
-  else:
-    return jsonify({'error': 'failed to reach camera'})
+  if request.method == "GET":
+    # Capture frame-by-frame
+    success, frame = camera.read()  # read the camera frame
+    if success:
+      eye_open, frame = face_detection(frame, face_cascade, eye_cascade)
+      return jsonify({'eyestatus': eye_open})
+    else:
+      return jsonify({'error': 'failed to reach camera'})
+  return jsonify({'error': 'wrong request type'})
 
 @app.route('/<path:path>')
 def open_paths(path):
   if path == 'p1':
     return render_template('p1Ext.html')
+  elif path == 'water':
+    return render_template('waterExt.html')
   elif path == 'forecast':
     return render_template('forecastExt.html')
   elif path == 'whitehole':

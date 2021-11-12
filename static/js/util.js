@@ -16,7 +16,7 @@ function getCurrEye(){
 getCurrEye();
 
 function onOpenCvReady(){
-  console.log('OpenCV ready', cv);
+  console.log('opencv ready');
   cv.onRuntimeInitialized=()=>{
     var dst = new cv.Mat(720, 1280, cv.CV_8UC4);
     const FPS = 50;
@@ -27,14 +27,11 @@ function onOpenCvReady(){
         $.ajax({
           type: "GET",
           url: "/getFrame",
-          success: function(output){
-            console.log(output);
-          },
           dataType: "json",
           contentType: "application/json",
           error: function (request, error) {
             console.log("get video processing results failed");
-          }
+          },
         }).done(function(data){
           if (data.error) {
             console.log(data.error);
