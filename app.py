@@ -1,6 +1,8 @@
-from flask import Flask, render_template, abort, request, redirect, url_for, Response
+from flask import Flask, render_template, abort, request, redirect, url_for, Response, jsonify
 from flask_caching import Cache
+from flask_wtf.csrf import CSRFProtect
 import cv2
+import json
 from blink_detection import face_detection
 
 config = {
@@ -10,6 +12,7 @@ config = {
 }
 app = Flask(__name__)
 app.config.from_mapping(config)
+csrf = CSRFProtect(app)
 
 @app.route('/')
 def index():
@@ -19,45 +22,16 @@ def index():
 def open_dreampage(error):
     return redirect(url_for('index')), 404
 
-# generate frame by frame from camera
-def gen_frames():
-    while True:
-        # Capture frame-by-frame
-        success, frame = camera.read()  # read the camera frame
-        if not success:
-            break
-        else:
-            eye_open, frame = face_detection(frame, face_cascade, eye_cascade)
-            cache.set("eye_open", eye_open)
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            return frame
-#            yield (b'--frame\r\n'
-#                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
-
-@app.route('/video_feed')
-def video_feed():
-    #Video streaming route. Put this in the src attribute of an img tag
-#    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-    return gen_frames()
-#    return redirect(url_for('static', filename='img/open.png'))
-
-# generate frame by frame from two images
-def get_image():
-    while True:
-      if cache.get("eye_open"):
-        img = eye_open_img
-      else:
-        img = eye_close_img
-      return img
-#      yield(b'--frame\r\n'
-#            b'Content-Type: image/jpeg\r\n\r\n'+ img + b'\r\n')
-
-@app.route("/img_feed")
-def img_feed():
-#    return Response(get_image(), mimetype="multipart/x-mixed-replace; boundary=frame")
-    return get_image()
-#    return redirect(url_for('static', filename='img/open.png'))
+@csrf.exempt
+@app.route('/getFrame', methods=['GET'])
+def get_frame():
+  # Capture frame-by-frame
+  success, frame = camera.read()  # read the camera frame
+  if success:
+    eye_open, frame = face_detection(frame, face_cascade, eye_cascade)
+    return jsonify({'eyestatus': eye_open})
+  else:
+    return jsonify({'error': 'failed to reach camera'})
 
 @app.route('/<path:path>')
 def open_paths(path):
@@ -71,8 +45,6 @@ def open_paths(path):
     abort(404)
 
 if __name__ == '__main__':
-    cache = Cache(app)
-    cache.set("eye_open", True)
     camera = cv2.VideoCapture(0)  # web camera
 
     # init the face and eye cascade classifiers from xml files

@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 def face_detection(img, face_cascade, eye_cascade):
-  eye_open = True
+  eye_open = 'open'
 
   #Coverting the recorded image to grayscale
   gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -25,7 +25,7 @@ def face_detection(img, face_cascade, eye_cascade):
           cv2.putText(img, "eyes open", (70,70), cv2.FONT_HERSHEY_PLAIN, 1.5, (159,50,0),2)
       else: 
         cv2.putText(img, "eyes closed", (70,70), cv2.FONT_HERSHEY_PLAIN, 1.5, (50,159,255),2)
-        eye_open = False
+        eye_open = 'close'
   else:
     cv2.putText(img,"no face detected",(100,100),cv2.FONT_HERSHEY_PLAIN, 1.5, (255,255,255),2)
 
