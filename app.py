@@ -43,6 +43,8 @@ def open_paths(path):
     return render_template('waterExt.html')
   elif path == 'forecast':
     return render_template('forecastExt.html')
+  elif path == 'ripple':
+    return render_template('rippleExt.html')
   elif path == 'whitehole':
     return render_template('whiteholeExt.html')
   else:
