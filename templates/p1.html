@@ -11,7 +11,8 @@
     #camera-container {
         margin: 0px auto;
         width: 100%;
-    }
+    }face_detection
+      
     #img-container {
         margin: 0px auto;
         height: 100%;
@@ -21,23 +22,13 @@
   <body>
     {% block header %}{% endblock %}
     <main role="main">
-      <img class="img-container" style="padding-bottom:20%;" id="curr-eye-img">
-        <source src="static/img/close.png" style=width:50%;bottom:100px;>
-      </img>
-      <!-- video from camera-->
-<!--
-      <div id="camera-container">
-        <video autoplay="true" id="video-in" height="720" width="1280" style=width:100%;>
-        </video>
+      <div class="img-container" style="padding-bottom:20%;">
+        <img src="{{ url_for('img_feed') }}" class="ui-section-hero--image" style=width:50%;bottom:100px;>
       </div>
--->
-      <div id="camera-container">
-        <canvas id = "video-out" height="720" width="1280" style=width:100%;></canvas>
+      <!-- CAMERA -->
+      <div class="camera-container">
+        <img src="{{ url_for('video_feed') }}" width="100%">
       </div>
-
-      <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-      <script async type="text/javascript" src="static/js/util.js"> </script>
-      <script async src="static/js/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>    
     </main>
     {% block footer %}{% endblock %}
   </body>
